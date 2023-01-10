@@ -3,7 +3,8 @@ package io.petstore.domains.services;
 import io.petstore.core.client.RestClient;
 import io.petstore.domains.entity.userRequest.User;
 import io.petstore.domains.entity.usersResponse.UsersResponse;
-import io.restassured.response.Response;
+
+import java.util.List;
 
 public class UsersServices extends RestClient {
     private final String endpoint;
@@ -12,8 +13,16 @@ public class UsersServices extends RestClient {
         this.endpoint = "user";
     }
 
-    public Response getUserByNameStatusCode(String username){
-        return get(endpoint + "/" + username);
+    public int getUserByNameStatusCode(String username){
+        return get(endpoint + "/" + username).then().extract().response().getStatusCode();
+    }
+
+    public int getUserLoginAndGetStatusCode(String username, String value, String password, String val){
+        return getWithQueryParams(endpoint + "/login", username, value, password, val).then().extract().response().getStatusCode();
+    }
+
+    public int getUserLogoutAndGetStatusCode(){
+        return get(endpoint + "/logout").then().extract().response().getStatusCode();
     }
 
     public User getUserWithUsername(String username){
@@ -28,6 +37,14 @@ public class UsersServices extends RestClient {
         post(endpoint, user).then().extract().response().body().as(UsersResponse.class);
     }
 
+    public int postWithUserArray(User[] users){
+        return post(endpoint + "/createWithArray", users).then().extract().response().getStatusCode();
+    }
+
+    public int postWithUserList(List<User> users){
+        return post(endpoint + "/createWithList", users).then().extract().response().getStatusCode();
+    }
+
     public int deleteUserAndGetStatusCode(String username){
         return delete(endpoint + "/" + username).then().extract().response().getStatusCode();
     }
@@ -35,5 +52,6 @@ public class UsersServices extends RestClient {
     public int updateUserAndGetStatusCode(User user, String username){
         return put(endpoint + "/" + username, user).then().extract().response().getStatusCode();
     }
+
 
 }

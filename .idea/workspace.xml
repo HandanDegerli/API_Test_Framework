@@ -4,26 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="855cd913-4ea7-4b9b-b6ab-a6aa0c0983ea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configuration.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/core/client/RestClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/core/config/ConfigParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/entity/userRequest/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/entity/usersResponse/UsersResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/services/UsersServices.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/utils/SpecificationFactory.java" afterDir="false" />
+    <list default="true" id="855cd913-4ea7-4b9b-b6ab-a6aa0c0983ea" name="Changes" comment="Api Test">
       <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/utils/SystemPropertyHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/allure.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/log4j.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/core/client/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/core/client/RestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/domains/services/UsersServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/services/UsersServices.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -50,17 +36,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/zelihadegerli/Desktop/RestAssured-API/apiTestApp&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "/Users/zelihadegerli/Desktop/RestAssured-API/apiTestApp",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "terminal"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test" />
@@ -80,8 +67,8 @@
       <recent name="heroku" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AccessTest.updateUser">
-    <configuration name="AccessTest.deleteUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.AccessTest">
+    <configuration name="AccessTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="apiTestApp" />
       <extension name="coverage">
         <pattern>
@@ -91,13 +78,28 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.petstore.steps" />
       <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="deleteUser" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccessTest.e2ETestCaseForUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="apiTestApp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.petstore.steps.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.petstore.steps" />
+      <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
+      <option name="METHOD_NAME" value="e2ETestCaseForUser" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccessTest.getUserWithIncorrectUsername" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccessTest.postUserArrayAndGetStatusCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="apiTestApp" />
       <extension name="coverage">
         <pattern>
@@ -107,13 +109,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.petstore.steps" />
       <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="getUserWithIncorrectUsername" />
+      <option name="METHOD_NAME" value="postUserArrayAndGetStatusCode" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccessTest.getUserWithUserName" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccessTest.postUserListAndGetStatusCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="apiTestApp" />
       <extension name="coverage">
         <pattern>
@@ -123,23 +125,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.petstore.steps" />
       <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="getUserWithUserName" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AccessTest.postUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="apiTestApp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.petstore.steps.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.petstore.steps" />
-      <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="postUser" />
+      <option name="METHOD_NAME" value="postUserListAndGetStatusCode" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -163,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AccessTest" />
+        <item itemvalue="JUnit.AccessTest.e2ETestCaseForUser" />
         <item itemvalue="JUnit.AccessTest.updateUser" />
-        <item itemvalue="JUnit.AccessTest.getUserWithUserName" />
-        <item itemvalue="JUnit.AccessTest.deleteUser" />
-        <item itemvalue="JUnit.AccessTest.getUserWithIncorrectUsername" />
-        <item itemvalue="JUnit.AccessTest.postUser" />
+        <item itemvalue="JUnit.AccessTest.postUserArrayAndGetStatusCode" />
+        <item itemvalue="JUnit.AccessTest.postUserListAndGetStatusCode" />
       </list>
     </recent_temporary>
   </component>
@@ -180,6 +166,14 @@
       <option name="presentableId" value="Default" />
       <updated>1672679110094</updated>
     </task>
+    <task id="LOCAL-00001" summary="Api Test">
+      <created>1673342414786</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1673342414786</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -193,15 +187,8 @@
       </map>
     </option>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/io/petstore/core/client/RestClient.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Api Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Api Test" />
   </component>
 </project>
