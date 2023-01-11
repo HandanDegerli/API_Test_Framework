@@ -3,12 +3,18 @@ package io.petstore.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.petstore.domains.entity.userRequest.ImmutableUser;
-import io.petstore.domains.entity.userRequest.User;
+import io.petstore.domains.entity.store.storeRequest.ImmutableOrderRequest;
+import io.petstore.domains.entity.store.storeRequest.OrderRequest;
+import io.petstore.domains.entity.store.storeResponse.InventoryResponse;
+import io.petstore.domains.entity.store.storeResponse.OrderResponse;
+import io.petstore.domains.entity.user.userRequest.ImmutableUser;
+import io.petstore.domains.entity.user.userRequest.User;
+import io.petstore.domains.services.StoreServices;
 import io.petstore.domains.services.UsersServices;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +23,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AccessTest {
 
     private final UsersServices usersServices;
+    private final StoreServices storeServices;
     private final Logger logger;
     ObjectMapper mapper;
 
     public AccessTest(){
         usersServices =new UsersServices();
+        storeServices = new StoreServices();
         logger = Logger.getLogger(AccessTest.class);
         mapper = new ObjectMapper();
     }
 
+    //              ***    USER TEST CASES    ***
     @Test
     public void getUserWithUserName(){
         logger.info("RUNNING TEST CASE 'getUserWithUserName'" );
@@ -87,7 +96,7 @@ public class AccessTest {
     }
 
     @Test
-    public void postUserArrayAndGetStatusCode() throws JsonProcessingException {
+    public void postUserArray() throws JsonProcessingException {
 
         logger.info("RUNNING TEST CASE 'postUserArrayAndGetStatusCode'" );
 
@@ -127,7 +136,7 @@ public class AccessTest {
     }
 
     @Test
-    public void postUserListAndGetStatusCode() throws JsonProcessingException {
+    public void postUserList() throws JsonProcessingException {
 
         logger.info("RUNNING TEST CASE 'postUserListAndGetStatusCode'" );
 
@@ -269,6 +278,123 @@ public class AccessTest {
         usersServices.postUser(user);
         return user;
     }
+
+    //              ***    STORE TEST CASES    ***
+
+    @Test
+    public void getOrderWithOrderId() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'getOrderWithOrderId'" );
+
+        OrderResponse order = createOrder();
+
+        logger.info("Getting Order with the ORDER ID : " + order.id() );
+        OrderResponse orderResponse = storeServices.getOrderByOrderId(order.id());
+
+        logger.info("Asserting ORDER PAYLOAD as :" + mapper.writeValueAsString(orderResponse));
+        assertEquals(order, orderResponse);
+
+    }
+
+    @Test
+    public void getOrderWithIncorrectOrderId() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'getOrderWithIncorrectOrderId'" );
+
+        logger.info("Getting Order with the ORDER ID : 9");
+        int responseStatusCode = storeServices.getOrderByOrderIdAndGetStatusCode(9);
+
+        logger.info("Asserting Status Code as 404");
+        assertEquals(404, responseStatusCode);
+
+    }
+
+    @Test
+    public void postOrder() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'postOrder'" );
+
+        OrderResponse orderResponse = createOrder();
+        OrderRequest order = mapper.convertValue(orderResponse, OrderRequest.class);
+
+        logger.info("Posting order with payload " + mapper.writeValueAsString(order));
+        int responseStatusCode = storeServices.postOrderAndGetStatusCode(order);
+
+        logger.info("Asserting Status Code as SUCCESS");
+        assertEquals(200, responseStatusCode , "Response code is not 200 as expected");
+
+    }
+
+    @Test
+    public void deleteOrder() {
+
+        logger.info("RUNNING TEST CASE 'deleteOrder'" );
+        OrderResponse order = createOrder();
+
+        logger.info("Deleting Exist Order and Asserting Status Code as SUCCESS");
+        assertEquals(200, storeServices.deleteOrderByOrderIdAndGetStatusCode(order.id()), "Order was not removed");
+
+        logger.info("Deleting Removed Order and Asserting Status Code as 404");
+        assertEquals(404, storeServices.deleteOrderByOrderIdAndGetStatusCode(order.id()), "Order was not removed");
+
+    }
+
+    @Test
+    public void getStoreInventory(){
+        logger.info("RUNNING TEST CASE 'getStoreInventory'" );
+
+        logger.info("Getting Inventory of Store and Status Code");
+        int inventoryResponseStatusCode = storeServices.getStoreInventoryAndGetStatusCode();
+
+        logger.info("Asserting Status Code as SUCCESS");
+        assertEquals(200, inventoryResponseStatusCode , "Response code is not 200 as expected");
+
+    }
+
+    @Test
+    public void orderE2ETest() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'orderE2ETest'" );
+
+        OrderResponse order = createOrder();
+        OrderRequest orderConvert = mapper.convertValue(order, OrderRequest.class);
+
+        logger.info("Posting order with payload " + mapper.writeValueAsString(orderConvert));
+        int responseStatusCode = storeServices.postOrderAndGetStatusCode(orderConvert);
+
+        logger.info("Asserting Status Code as SUCCESS");
+        assertEquals(200, responseStatusCode , "Response code is not 200 as expected");
+
+        logger.info("Getting Order with the ORDER ID : " + order.id() );
+        OrderResponse orderResponse = storeServices.getOrderByOrderId(order.id());
+
+        logger.info("Asserting ORDER PAYLOAD as :" + mapper.writeValueAsString(orderResponse));
+        assertEquals(order, orderResponse);
+
+        logger.info("Deleting Exist Order and Asserting Status Code as SUCCESS");
+        assertEquals(200, storeServices.deleteOrderByOrderIdAndGetStatusCode(order.id()), "Order was not removed");
+
+        logger.info("Asserting Order is Also Removed");
+        assertEquals(404, storeServices.deleteOrderByOrderIdAndGetStatusCode(order.id()), "Order was not removed");
+
+        logger.info("Getting Removed Order and and Asserting Status Code as 404");
+        int orderResponseStatus = storeServices.getOrderByOrderIdAndGetStatusCode(order.id());
+        assertEquals(404, orderResponseStatus);
+
+
+    }
+
+
+    private OrderResponse createOrder(){
+        OrderRequest order = ImmutableOrderRequest.builder()
+                .id(11)
+                .petId(1)
+                .quantity(3)
+                .shipDate("2023-01-12T14:15:02.414+0000")
+                .status("approved")
+                .complete(true)
+                .build();
+
+        logger.info("Creating an ORDER");
+        return storeServices.postOrder(order);
+    }
+
 
 
 }

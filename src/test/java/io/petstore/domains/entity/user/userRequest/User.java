@@ -1,4 +1,4 @@
-package io.petstore.domains.entity.userRequest;
+package io.petstore.domains.entity.user.userRequest;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

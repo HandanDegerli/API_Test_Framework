@@ -1,8 +1,8 @@
 package io.petstore.domains.services;
 
 import io.petstore.core.client.RestClient;
-import io.petstore.domains.entity.userRequest.User;
-import io.petstore.domains.entity.usersResponse.UsersResponse;
+import io.petstore.domains.entity.user.userRequest.User;
+import io.petstore.domains.entity.user.usersResponse.UsersResponse;
 
 import java.util.List;
 
