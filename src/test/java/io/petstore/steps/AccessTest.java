@@ -3,18 +3,19 @@ package io.petstore.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.petstore.domains.entity.pet.petRequests.*;
+import io.petstore.domains.entity.pet.petResponses.PetResponse;
 import io.petstore.domains.entity.store.storeRequest.ImmutableOrderRequest;
 import io.petstore.domains.entity.store.storeRequest.OrderRequest;
-import io.petstore.domains.entity.store.storeResponse.InventoryResponse;
 import io.petstore.domains.entity.store.storeResponse.OrderResponse;
 import io.petstore.domains.entity.user.userRequest.ImmutableUser;
 import io.petstore.domains.entity.user.userRequest.User;
+import io.petstore.domains.services.PetServices;
 import io.petstore.domains.services.StoreServices;
 import io.petstore.domains.services.UsersServices;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +25,14 @@ public class AccessTest {
 
     private final UsersServices usersServices;
     private final StoreServices storeServices;
+    private final PetServices petServices;
     private final Logger logger;
     ObjectMapper mapper;
 
     public AccessTest(){
         usersServices =new UsersServices();
         storeServices = new StoreServices();
+        petServices = new PetServices();
         logger = Logger.getLogger(AccessTest.class);
         mapper = new ObjectMapper();
     }
@@ -395,6 +398,58 @@ public class AccessTest {
         return storeServices.postOrder(order);
     }
 
+    //              ***    PET TEST CASES    ***
+
+
+    @Test
+    public void postPet() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'postPet'" );
+
+        PetResponse petResponse = createPet();
+        Pet pet = mapper.convertValue(petResponse, Pet.class);
+
+        logger.info("Posting a pet with payload " + mapper.writeValueAsString(pet));
+        int responseStatusCode = petServices.postPetAndGetStatusCode(pet);
+
+        logger.info("Asserting Status Code as SUCCESS");
+        assertEquals(200, responseStatusCode , "Response code is not 200 as expected");
+
+    }
+
+    private PetResponse createPet(){
+        Category category = ImmutableCategory.builder()
+                .id(1)
+                .name("Dog")
+                .build();
+
+        List<Tag> tags = new ArrayList<>();
+        Tag tag1 = ImmutableTag.builder()
+                .id(1)
+                .name("Golden")
+                .build();
+
+        Tag tag2 = ImmutableTag.builder()
+                .id(1)
+                .name("Gold")
+                .build();
+        tags.add(tag1);
+        tags.add(tag2);
+
+        List<String> photoUrl= new ArrayList<>();
+        photoUrl.add("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.dreamstime.com%2Fphotos-images%2Fdog.html&psig=AOvVaw3kfzxWtHEcTPzp9EDQWnyw&ust=1673626046490000&source=images&cd=vfe&ved=2ahUKEwjrjpaBtcL8AhWMk4sKHYRwAocQjRx6BAgAEAo");
+
+        Pet pet = ImmutablePet.builder()
+                .id(1)
+                .category(category)
+                .name("Odie")
+                .photoUrls(photoUrl)
+                .tags(tags)
+                .status("available")
+                .build();
+
+        logger.info("Creating a pet");
+        return petServices.postPet(pet);
+    }
 
 
 }
