@@ -4,6 +4,7 @@ import io.petstore.core.config.ConfigParser;
 import io.petstore.utils.SpecificationFactory;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import io.restassured.http.Header;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;
@@ -44,5 +45,10 @@ public class RestClient {
 
     public Response delete(String endpoint) {
         return given().spec(SpecificationFactory.log_Response_To_Allure()).when().delete(endpoint);
+    }
+
+    public Response deleteWithAuth(String endpoint, Header header){
+        return given().contentType(ContentType.JSON).spec(SpecificationFactory.log_Response_To_Allure())
+                .when().header(header).delete(endpoint);
     }
 }

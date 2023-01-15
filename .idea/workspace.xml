@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="855cd913-4ea7-4b9b-b6ab-a6aa0c0983ea" name="Changes" comment="Added Store Test Cases">
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/entity/pet/petRequests/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/entity/pet/petRequests/Pet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/entity/pet/petRequests/Tag.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/entity/pet/petResponses/PetResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/services/PetServices.java" afterDir="false" />
+    <list default="true" id="855cd913-4ea7-4b9b-b6ab-a6aa0c0983ea" name="Changes" comment="Added Pet Test Cases">
       <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/utils/SystemPropertyHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/core/client/RestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/core/client/RestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/domains/services/PetServices.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/domains/services/PetServices.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,18 +36,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/Users/zelihadegerli/Desktop/RestAssured-API/apiTestApp",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "terminal"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zelihadegerli/Desktop/RestAssured-API/apiTestApp&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/test" />
@@ -70,8 +67,8 @@
       <recent name="heroku" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AccessTest.postPet">
-    <configuration name="AccessTest.deleteOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.AccessTest.deletePet">
+    <configuration name="AccessTest.deletePet" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="apiTestApp" />
       <extension name="coverage">
         <pattern>
@@ -81,13 +78,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.petstore.steps" />
       <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="deleteOrder" />
+      <option name="METHOD_NAME" value="deletePet" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccessTest.getStoreInventory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccessTest.getPetWithIncorrectPetId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="apiTestApp" />
       <extension name="coverage">
         <pattern>
@@ -97,13 +94,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.petstore.steps" />
       <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="getStoreInventory" />
+      <option name="METHOD_NAME" value="getPetWithIncorrectPetId" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AccessTest.orderE2ETest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AccessTest.getPetWithPetId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="apiTestApp" />
       <extension name="coverage">
         <pattern>
@@ -113,23 +110,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="io.petstore.steps" />
       <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="orderE2ETest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AccessTest.postOrder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="apiTestApp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.petstore.steps.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="io.petstore.steps" />
-      <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
-      <option name="METHOD_NAME" value="postOrder" />
+      <option name="METHOD_NAME" value="getPetWithPetId" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -151,13 +132,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AccessTest.updatePet" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="apiTestApp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.petstore.steps.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.petstore.steps" />
+      <option name="MAIN_CLASS_NAME" value="io.petstore.steps.AccessTest" />
+      <option name="METHOD_NAME" value="updatePet" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AccessTest.deletePet" />
         <item itemvalue="JUnit.AccessTest.postPet" />
-        <item itemvalue="JUnit.AccessTest.orderE2ETest" />
-        <item itemvalue="JUnit.AccessTest.getStoreInventory" />
-        <item itemvalue="JUnit.AccessTest.deleteOrder" />
-        <item itemvalue="JUnit.AccessTest.postOrder" />
+        <item itemvalue="JUnit.AccessTest.getPetWithIncorrectPetId" />
+        <item itemvalue="JUnit.AccessTest.getPetWithPetId" />
+        <item itemvalue="JUnit.AccessTest.updatePet" />
       </list>
     </recent_temporary>
   </component>
@@ -191,7 +188,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673465574267</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added Pet Test Cases">
+      <created>1673552028276</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1673552028276</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -209,6 +213,7 @@
     <MESSAGE value="Api Test" />
     <MESSAGE value="Extended User Test Cases" />
     <MESSAGE value="Added Store Test Cases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Store Test Cases" />
+    <MESSAGE value="Added Pet Test Cases" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Pet Test Cases" />
   </component>
 </project>

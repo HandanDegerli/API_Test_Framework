@@ -13,6 +13,7 @@ import io.petstore.domains.entity.user.userRequest.User;
 import io.petstore.domains.services.PetServices;
 import io.petstore.domains.services.StoreServices;
 import io.petstore.domains.services.UsersServices;
+import io.restassured.http.Header;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
@@ -211,7 +212,7 @@ public class AccessTest {
 
         logger.info("Updating User as Another User and Asserting Status Code as SUCCESS");
         assertEquals(200, usersServices.updateUserAndGetStatusCode(secondUser, user.username()));
-        logger.info("User is updated with payload " + mapper.writeValueAsString(secondUser));
+        logger.info("Pet is updated with payload " + mapper.writeValueAsString(secondUser));
     }
 
     @Test
@@ -302,7 +303,7 @@ public class AccessTest {
     public void getOrderWithIncorrectOrderId() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'getOrderWithIncorrectOrderId'" );
 
-        logger.info("Getting Order with the ORDER ID : 9");
+        logger.info("Getting Order with the INCORRECT ORDER ID : 9");
         int responseStatusCode = storeServices.getOrderByOrderIdAndGetStatusCode(9);
 
         logger.info("Asserting Status Code as 404");
@@ -402,6 +403,31 @@ public class AccessTest {
 
 
     @Test
+    public void getPetWithPetId() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'getPetWithPetId'" );
+
+        PetResponse pet = createPet();
+
+        logger.info("Getting Pet with the PET ID : " + pet.id() );
+        PetResponse petResponse = petServices.getPet(pet.id());
+
+        logger.info("Asserting PET PAYLOAD as :" + mapper.writeValueAsString(petResponse));
+        assertEquals(pet, petResponse);
+
+    }
+
+    @Test
+    public void getPetWithIncorrectPetId() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'getPetWithIncorrectPetId'" );
+
+        logger.info("Getting Pet with the INCORRECT PET ID : 11111");
+        int responseStatusCode = petServices.getPetAndGetStatusCode(11111);
+
+        logger.info("Asserting Status Code as 404");
+        assertEquals(404, responseStatusCode);
+
+    }
+    @Test
     public void postPet() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'postPet'" );
 
@@ -415,6 +441,52 @@ public class AccessTest {
         assertEquals(200, responseStatusCode , "Response code is not 200 as expected");
 
     }
+
+    @Test
+    public void updatePet() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'updatePet'" );
+        PetResponse pet = createPet();
+        logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
+        List<Tag> tags = new ArrayList<>();
+        Tag tag2 = ImmutableTag.builder()
+                .id(2)
+                .name("Brown")
+                .build();
+        tags.add(pet.tags().get(0));
+        tags.add(tag2);
+        List<String> photoUrl= new ArrayList<>();
+        photoUrl.add("https://www.skpups.com/site/assets/files/33093/susangolden17-1.2123x1413.jpg");
+        Pet updatedPet = ImmutablePet.builder()
+                .id(1)
+                .category(pet.category())
+                .name("Alex")
+                .photoUrls(photoUrl)
+                .tags(tags)
+                .status(pet.status())
+                .build();
+
+        logger.info("Updating Pet as Another Pet and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.updatePetAndGetStatusCode(updatedPet));
+        logger.info("Pet is updated with payload " + mapper.writeValueAsString(updatedPet));
+
+    }
+    @Test
+    public void deletePet() {
+
+        logger.info("RUNNING TEST CASE 'deletePet'" );
+        PetResponse pet = createPet();
+
+        Header key = new Header("api_key", "Content-Type,api_key,Authorization");
+
+        logger.info("Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.deletePetAndGetStatusCode(pet.id(), key), "Pet was not removed");
+
+        logger.info("Getting Removed Pet and and Asserting Status Code as 404");
+       assertEquals(404, petServices.deletePetAndGetStatusCode(pet.id(), key), "Pet was not deleted");
+
+    }
+
+
 
     private PetResponse createPet(){
         Category category = ImmutableCategory.builder()
@@ -436,7 +508,7 @@ public class AccessTest {
         tags.add(tag2);
 
         List<String> photoUrl= new ArrayList<>();
-        photoUrl.add("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.dreamstime.com%2Fphotos-images%2Fdog.html&psig=AOvVaw3kfzxWtHEcTPzp9EDQWnyw&ust=1673626046490000&source=images&cd=vfe&ved=2ahUKEwjrjpaBtcL8AhWMk4sKHYRwAocQjRx6BAgAEAo");
+        photoUrl.add("https://www.dailydogtag.com/wp-content/uploads/2020/02/%C2%A9Bark-Gold-Photography-lifestyle-dog-photography-21.jpg");
 
         Pet pet = ImmutablePet.builder()
                 .id(1)
