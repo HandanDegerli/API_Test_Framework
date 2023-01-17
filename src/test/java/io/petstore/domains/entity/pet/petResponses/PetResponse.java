@@ -6,16 +6,20 @@ import io.petstore.domains.entity.pet.petRequests.Category;
 import io.petstore.domains.entity.pet.petRequests.Tag;
 import org.immutables.value.Value;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Value.Immutable
 @JsonSerialize(as = ImmutablePetResponse.class)
 @JsonDeserialize(as = ImmutablePetResponse.class)
 @Value.Style(jdkOnly = true)
+
 public interface PetResponse {
 
-    int id();
+    long id();
+    @Nullable
     Category category();
+    @Nullable
     String name();
     List<String> photoUrls();
     List<Tag> tags();

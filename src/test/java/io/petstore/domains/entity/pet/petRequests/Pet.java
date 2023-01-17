@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Value.Immutable
@@ -12,8 +13,11 @@ import java.util.List;
 @Value.Style(jdkOnly = true)
 public interface Pet {
 
-    int id();
+
+    long id();
+    @Nullable
     Category category();
+    @Nullable
     String name();
     List<String> photoUrls();
     List<Tag> tags();
