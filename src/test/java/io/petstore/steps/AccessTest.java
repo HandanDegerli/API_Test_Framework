@@ -18,9 +18,10 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AccessTest {
 
@@ -303,8 +304,8 @@ public class AccessTest {
     public void getOrderWithIncorrectOrderId() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'getOrderWithIncorrectOrderId'" );
 
-        logger.info("Getting Order with the INCORRECT ORDER ID : 9");
-        int responseStatusCode = storeServices.getOrderByOrderIdAndGetStatusCode(9);
+        logger.info("Getting Order with the INCORRECT ORDER ID : 4444444");
+        int responseStatusCode = storeServices.getOrderByOrderIdAndGetStatusCode(4444444);
 
         logger.info("Asserting Status Code as 404");
         assertEquals(404, responseStatusCode);
@@ -381,7 +382,6 @@ public class AccessTest {
         int orderResponseStatus = storeServices.getOrderByOrderIdAndGetStatusCode(order.id());
         assertEquals(404, orderResponseStatus);
 
-
     }
 
 
@@ -427,6 +427,27 @@ public class AccessTest {
         assertEquals(404, responseStatusCode);
 
     }
+
+    @Test
+    public void getPetWithPetStatus() throws JsonProcessingException {
+
+        logger.info("RUNNING TEST CASE 'getPetWithPetStatus'" );
+        PetResponse pet = createPet();
+
+        logger.info("Get Pet with Pet Status as " + "'" +pet.status() + "'" + " and Getting Status Code then Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.getPetsWithPetStatusAndGetStatusCode("status", pet.status()));
+
+
+        PetResponse[] petListResponse = petServices.getPetsWithPetStatus("status", pet.status());
+
+        PetResponse actualPet = Arrays.stream(petListResponse).filter(petResponse -> petResponse.id() == pet.id()).findFirst().get();
+
+
+        logger.info("Asserting PET PAYLOAD as :" + mapper.writeValueAsString(actualPet));
+        assertEquals(pet, actualPet);
+
+
+    }
     @Test
     public void postPet() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'postPet'" );
@@ -440,6 +461,38 @@ public class AccessTest {
         logger.info("Asserting Status Code as SUCCESS");
         assertEquals(200, responseStatusCode , "Response code is not 200 as expected");
 
+    }
+
+    @Test
+    public void postFileToExistPet() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'postFileToExistPet'" );
+        PetResponse pet = createPet();
+        logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
+
+        logger.info("Uploading Image with text successfully and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.postFileAndText(pet.id(), "Puppy Golden", "/Users/zelihadegerli/Desktop/Puppy.jpeg"));
+
+    }
+
+    @Test
+    public void updatePetNameAndStatus() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'updatePetNameAndStatus'" );
+        PetResponse pet = createPet();
+        logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
+
+        logger.info("Updating Pet's Name and Pet's Status successfully and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.updatePetNameAndStatusAndGetStatusCode(pet.id(), "Summer", "Sold"));
+
+        logger.info("Getting Partially Updated Pet with the PET ID : " + pet.id());
+        PetResponse petResponse = petServices.getPet(pet.id());
+
+        logger.info("Pet is updated with NAME and STATUS. Updated Pet Payload is " + mapper.writeValueAsString(petResponse));
+
+        logger.info("Asserting NOT Equals request Pet Name: " + pet.name() + " and " + " response Pet Name: " + petResponse.name());
+        assertNotEquals(pet.name(), petResponse.name());
+
+        logger.info("Asserting NOT Equals request Pet Status: " + pet.status() + " and " + " response Pet Status: " + petResponse.status());
+        assertNotEquals(pet.status(), petResponse.status());
     }
 
     @Test
@@ -468,8 +521,8 @@ public class AccessTest {
         logger.info("Updating Pet as Another Pet and Asserting Status Code as SUCCESS");
         assertEquals(200, petServices.updatePetAndGetStatusCode(updatedPet));
         logger.info("Pet is updated with payload " + mapper.writeValueAsString(updatedPet));
-
     }
+
     @Test
     public void deletePet() {
 
@@ -486,7 +539,64 @@ public class AccessTest {
 
     }
 
+    @Test
+    public void petE2ETest() throws JsonProcessingException {
+        logger.info("RUNNING TEST CASE 'petE2ETest'" );
 
+        Header key = new Header("api_key", "Content-Type,api_key,Authorization");
+
+        PetResponse createdPet = createPet();
+        logger.info("Created Pet with payload " + mapper.writeValueAsString(createdPet));
+
+        logger.info("Getting Pet with the PET ID : " + createdPet.id() );
+        PetResponse createdPetResponse = petServices.getPet(createdPet.id());
+
+        logger.info("Asserting PET PAYLOAD as :" + mapper.writeValueAsString(createdPetResponse));
+        assertEquals(createdPet, createdPetResponse);
+
+        logger.info("Updating Pet's Name as 'Summer' and Pet's Status  as 'Sold' successfully and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.updatePetNameAndStatusAndGetStatusCode(createdPetResponse.id(), "Summer", "Sold"));
+
+        logger.info("Getting Partially Updated Pet with the PET ID : " + createdPetResponse.id());
+        PetResponse petResponse = petServices.getPet(createdPetResponse.id());
+        logger.info("Pet is Partially Updated with NAME and STATUS. Updated Pet Payload is " + mapper.writeValueAsString(petResponse));
+
+        logger.info("Getting Pet List with the Partially Updated PET STATUS : " + petResponse.status());
+        PetResponse[] petListResponse = petServices.getPetsWithPetStatus("status", petResponse.status());
+        logger.info("Getting Partially Updated Pet from Pet List with the PET ID : " + petResponse.id());
+        PetResponse actualPet = Arrays.stream(petListResponse).filter(p -> p.id() == petResponse.id()).findFirst().orElseThrow(null);
+        logger.info("Asserting Partially Updated PET PAYLOAD as :" + mapper.writeValueAsString(actualPet));
+        assertEquals(petResponse, actualPet);
+
+        logger.info("Uploading Image with text successfully and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.postFileAndText(actualPet.id(), "Puppy Golden", "/Users/zelihadegerli/Desktop/Puppy.jpeg"));
+
+        logger.info("Getting Pet with the PET ID : " + actualPet.id() );
+        PetResponse response = petServices.getPet(actualPet.id());
+
+        logger.info("Asserting PET PAYLOAD as :" + mapper.writeValueAsString(response));
+        assertEquals(actualPet, response);
+
+        Pet updatedPet = ImmutablePet.builder()
+                .id(2)
+                .category(response.category())
+                .name("Alex")
+                .photoUrls(response.photoUrls())
+                .tags(response.tags())
+                .status(response.status())
+                .build();
+
+        logger.info("Updating Pet as Another Pet and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.updatePetAndGetStatusCode(updatedPet));
+        logger.info("Pet is updated with payload " + mapper.writeValueAsString(updatedPet));
+
+        logger.info("Deleting Exist Pet and Asserting Status Code as SUCCESS");
+        assertEquals(200, petServices.deletePetAndGetStatusCode(updatedPet.id(), key), "Pet was not removed");
+
+        logger.info("Getting Removed Pet and and Asserting Status Code as 404");
+        assertEquals(404, petServices.deletePetAndGetStatusCode(updatedPet.id(), key), "Pet was not deleted");
+
+    }
 
     private PetResponse createPet(){
         Category category = ImmutableCategory.builder()
@@ -516,12 +626,11 @@ public class AccessTest {
                 .name("Odie")
                 .photoUrls(photoUrl)
                 .tags(tags)
-                .status("available")
+                .status("pending")
                 .build();
 
         logger.info("Creating a pet");
         return petServices.postPet(pet);
     }
-
 
 }

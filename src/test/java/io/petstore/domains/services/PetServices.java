@@ -2,8 +2,6 @@ package io.petstore.domains.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.petstore.core.client.RestClient;
-import io.petstore.domains.entity.pet.petRequests.ImmutablePartialPetRequest;
-import io.petstore.domains.entity.pet.petRequests.PartialPetRequest;
 import io.petstore.domains.entity.pet.petRequests.Pet;
 import io.petstore.domains.entity.pet.petResponses.PetResponse;
 import io.restassured.http.Header;
@@ -50,9 +48,12 @@ public class PetServices extends RestClient {
         return put(endpoint, pet).then().extract().response().getStatusCode();
     }
 
-    public int updatePetNameAndStatusAndGetStatusCode(long petId, String name, String status){
-        PartialPetRequest partialPetRequest = ImmutablePartialPetRequest.builder().name(name).status(status).build();
-        return postDifferentContentType(endpoint + "/" + petId, partialPetRequest).then().extract().response().getStatusCode();
+    public int updatePetNameAndStatusAndGetStatusCode(long petId, String nameValue, String statusValue){
+        return postDifferentContentType(endpoint + "/" + petId, nameValue, statusValue).then().extract().response().getStatusCode();
+    }
+
+    public int postFileAndText(long petId, String additionalMetadata, String filePath){
+        return postDifferentContentTypeAndFile(endpoint + "/" + petId + "/uploadImage", additionalMetadata, filePath).then().extract().response().getStatusCode();
     }
 
     public PetResponse updatePet(Pet pet){
