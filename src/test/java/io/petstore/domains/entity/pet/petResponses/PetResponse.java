@@ -22,6 +22,7 @@ public interface PetResponse {
     @Nullable
     String name();
     List<String> photoUrls();
+    @Nullable
     List<Tag> tags();
     String status();
 }

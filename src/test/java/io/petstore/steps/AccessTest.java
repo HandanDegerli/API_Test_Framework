@@ -3,9 +3,11 @@ package io.petstore.steps;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.petstore.domains.builders.OrderBuilder;
+import io.petstore.domains.builders.PetBuilder;
+import io.petstore.domains.builders.UserBuilder;
 import io.petstore.domains.entity.pet.petRequests.*;
 import io.petstore.domains.entity.pet.petResponses.PetResponse;
-import io.petstore.domains.entity.store.storeRequest.ImmutableOrderRequest;
 import io.petstore.domains.entity.store.storeRequest.OrderRequest;
 import io.petstore.domains.entity.store.storeResponse.OrderResponse;
 import io.petstore.domains.entity.user.userRequest.ImmutableUser;
@@ -15,35 +17,52 @@ import io.petstore.domains.services.StoreServices;
 import io.petstore.domains.services.UsersServices;
 import io.restassured.http.Header;
 import org.apache.log4j.Logger;
+import org.junit.After;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AccessTest {
-
     private final UsersServices usersServices;
     private final StoreServices storeServices;
     private final PetServices petServices;
+    private final UserBuilder userBuilder;
+    private final OrderBuilder orderBuilder;
+    private final PetBuilder petBuilder;
     private final Logger logger;
     ObjectMapper mapper;
+
+    private final List<String> usernameList;
+    private final List<Integer> orderIdList;
+    private final List<Long> petIdList;
 
     public AccessTest(){
         usersServices =new UsersServices();
         storeServices = new StoreServices();
         petServices = new PetServices();
+        userBuilder = new UserBuilder();
+        orderBuilder = new OrderBuilder();
+        petBuilder = new PetBuilder();
         logger = Logger.getLogger(AccessTest.class);
         mapper = new ObjectMapper();
+        usernameList = new ArrayList<>();
+        orderIdList = new ArrayList<>();
+        petIdList = new ArrayList<>();
     }
 
     //              ***    USER TEST CASES    ***
     @Test
     public void getUserWithUserName(){
         logger.info("RUNNING TEST CASE 'getUserWithUserName'" );
-        User user = createUser();
+        User user = userBuilder.createUser();
+        logger.info("Created User's username is saved on username List");
+        usernameList.add(user.username());
 
         logger.info("Getting User with the USERNAME : " + user.username());
         int responseStatus = usersServices.getUserByNameStatusCode(user.username());
@@ -68,7 +87,9 @@ public class AccessTest {
     public void getUserLogin(){
 
         logger.info("RUNNING TEST CASE 'getUserLogin'" );
-        User user = createUser();
+        User user = userBuilder.createUser();
+        logger.info("Created User's username is saved on username List");
+        usernameList.add(user.username());
 
         //RestAssured.given().queryParams("username", user.username(), "password", user.password()).log().all().get();
 
@@ -89,7 +110,9 @@ public class AccessTest {
     public void postUser() throws JsonProcessingException {
 
         logger.info("RUNNING TEST CASE 'postUser'" );
-        User user = createUser();
+        User user = userBuilder.createUser();
+        logger.info("Created User's username is saved on username List");
+        usernameList.add(user.username());
 
         logger.info("Creating a User with payload " + mapper.writeValueAsString(user));
         logger.info("Asserting Status Code as SUCCESS");
@@ -105,15 +128,7 @@ public class AccessTest {
 
         logger.info("RUNNING TEST CASE 'postUserArrayAndGetStatusCode'" );
 
-        User user1= ImmutableUser.builder()
-                .id(17)
-                .username("Odin")
-                .firstName("Str")
-                .lastName("Str")
-                .email("odie@dog.com")
-                .password("Odie123.")
-                .phone("12345678")
-                .userStatus(1).build();
+        User user1= userBuilder.createUser();
 
         User user2= ImmutableUser.builder()
                 .id(18)
@@ -124,6 +139,9 @@ public class AccessTest {
                 .password("Odie123.")
                 .phone("12345678")
                 .userStatus(2).build();
+        logger.info("Created Users's usernames are saved on username List");
+        usernameList.add(user1.username());
+        usernameList.add(user2.username());
 
         logger.info("Creating Users with payloads and add them to users array" + mapper.writeValueAsString(user1) + " , " + mapper.writeValueAsString(user2));
         User[] users = {user1, user2};
@@ -145,15 +163,7 @@ public class AccessTest {
 
         logger.info("RUNNING TEST CASE 'postUserListAndGetStatusCode'" );
 
-        User user1= ImmutableUser.builder()
-                .id(17)
-                .username("Odin")
-                .firstName("Str")
-                .lastName("Str")
-                .email("odie@dog.com")
-                .password("Odie123.")
-                .phone("12345678")
-                .userStatus(1).build();
+        User user1= userBuilder.createUser();
 
         User user2= ImmutableUser.builder()
                 .id(18)
@@ -169,6 +179,10 @@ public class AccessTest {
         List<User> users = new ArrayList<>();
         users.add(user1);
         users.add(user2);
+
+        logger.info("Created Users's usernames are saved on username List");
+        usernameList.add(user1.username());
+        usernameList.add(user2.username());
 
         logger.info("Asserting Status Code as SUCCESS");
         assertEquals(200, usersServices.postWithUserList(users), "Response code is not 200 as expected");
@@ -186,7 +200,7 @@ public class AccessTest {
     public void deleteUser() {
 
         logger.info("RUNNING TEST CASE 'deleteUser'" );
-        User user = createUser();
+        User user = userBuilder.createUser();
 
         logger.info("Asserting Status Code as SUCCESS");
         assertEquals(200, usersServices.deleteUserAndGetStatusCode(user.username()), "User was not removed");
@@ -200,7 +214,7 @@ public class AccessTest {
     public void updateUser() throws JsonProcessingException {
 
         logger.info("RUNNING TEST CASE 'updateUser'" );
-        User user = createUser();
+        User user = userBuilder.createUser();
         User secondUser = ImmutableUser.builder()
                 .id(16)
                 .username("Zeliha")
@@ -210,6 +224,9 @@ public class AccessTest {
                 .password("Odie123.")
                 .phone("12345678")
                 .userStatus(1).build();
+        logger.info("Created Users's usernames are saved on username List");
+        usernameList.add(user.username());
+        usernameList.add(secondUser.username());
 
         logger.info("Updating User as Another User and Asserting Status Code as SUCCESS");
         assertEquals(200, usersServices.updateUserAndGetStatusCode(secondUser, user.username()));
@@ -220,15 +237,7 @@ public class AccessTest {
     public void userE2ETest() throws JsonProcessingException {
 
         logger.info("RUNNING TEST CASE 'userE2ETest'" );
-        User user= ImmutableUser.builder()
-                .id(17)
-                .username("ODIN")
-                .firstName("Str")
-                .lastName("Str")
-                .email("odie@dog.com")
-                .password("Odie123.")
-                .phone("12345678")
-                .userStatus(1).build();
+        User user= userBuilder.createUser();
 
         logger.info("Creating a User with payload " + mapper.writeValueAsString(user));
         logger.info("Asserting Status Code as SUCCESS");
@@ -240,14 +249,18 @@ public class AccessTest {
         assertEquals(user.username(), userResponse1.username());
 
         User secondUser = ImmutableUser.builder()
-                .id(16)
-                .username("ODIE")
-                .firstName("Handan")
-                .lastName("Deger")
+                .id(17)
+                .username("ODIN")
+                .firstName("Str")
+                .lastName("Str")
                 .email("odie@dog.com")
                 .password("Odie123.")
                 .phone("12345678")
                 .userStatus(1).build();
+
+        logger.info("Created Users's usernames are saved on username List");
+        usernameList.add(user.username());
+        usernameList.add(secondUser.username());
 
         logger.info("Updating User as Another User and Asserting Status Code as SUCCESS");
         logger.info("User is updated with payload " + mapper.writeValueAsString(secondUser));
@@ -269,28 +282,15 @@ public class AccessTest {
 
     }
 
-    private User createUser(){
-        logger.info("Creating a COMMON USER");
-        User user = ImmutableUser.builder()
-                .id(16)
-                .username("Handan")
-                .firstName("Handan")
-                .lastName("Deger")
-                .email("odie@dog.com")
-                .password("Odie123.")
-                .phone("12345678")
-                .userStatus(1).build();
-        usersServices.postUser(user);
-        return user;
-    }
-
     //              ***    STORE TEST CASES    ***
 
     @Test
     public void getOrderWithOrderId() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'getOrderWithOrderId'" );
 
-        OrderResponse order = createOrder();
+        OrderResponse order = orderBuilder.createOrder();
+        logger.info("Created Order's id is saved on Id List");
+        orderIdList.add(order.id());
 
         logger.info("Getting Order with the ORDER ID : " + order.id() );
         OrderResponse orderResponse = storeServices.getOrderByOrderId(order.id());
@@ -316,8 +316,11 @@ public class AccessTest {
     public void postOrder() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'postOrder'" );
 
-        OrderResponse orderResponse = createOrder();
+        OrderResponse orderResponse = orderBuilder.createOrder();
         OrderRequest order = mapper.convertValue(orderResponse, OrderRequest.class);
+
+        logger.info("Created Order's id is saved on Id List");
+        orderIdList.add(order.id());
 
         logger.info("Posting order with payload " + mapper.writeValueAsString(order));
         int responseStatusCode = storeServices.postOrderAndGetStatusCode(order);
@@ -331,7 +334,7 @@ public class AccessTest {
     public void deleteOrder() {
 
         logger.info("RUNNING TEST CASE 'deleteOrder'" );
-        OrderResponse order = createOrder();
+        OrderResponse order = orderBuilder.createOrder();
 
         logger.info("Deleting Exist Order and Asserting Status Code as SUCCESS");
         assertEquals(200, storeServices.deleteOrderByOrderIdAndGetStatusCode(order.id()), "Order was not removed");
@@ -357,8 +360,11 @@ public class AccessTest {
     public void orderE2ETest() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'orderE2ETest'" );
 
-        OrderResponse order = createOrder();
+        OrderResponse order = orderBuilder.createOrder();
         OrderRequest orderConvert = mapper.convertValue(order, OrderRequest.class);
+
+        logger.info("Created Order's id is saved on Id List");
+        orderIdList.add(order.id());
 
         logger.info("Posting order with payload " + mapper.writeValueAsString(orderConvert));
         int responseStatusCode = storeServices.postOrderAndGetStatusCode(orderConvert);
@@ -384,21 +390,6 @@ public class AccessTest {
 
     }
 
-
-    private OrderResponse createOrder(){
-        OrderRequest order = ImmutableOrderRequest.builder()
-                .id(11)
-                .petId(1)
-                .quantity(3)
-                .shipDate("2023-01-12T14:15:02.414+0000")
-                .status("approved")
-                .complete(true)
-                .build();
-
-        logger.info("Creating an ORDER");
-        return storeServices.postOrder(order);
-    }
-
     //              ***    PET TEST CASES    ***
 
 
@@ -406,7 +397,9 @@ public class AccessTest {
     public void getPetWithPetId() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'getPetWithPetId'" );
 
-        PetResponse pet = createPet();
+        PetResponse pet = petBuilder.createPet();
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(pet.id());
 
         logger.info("Getting Pet with the PET ID : " + pet.id() );
         PetResponse petResponse = petServices.getPet(pet.id());
@@ -432,7 +425,10 @@ public class AccessTest {
     public void getPetWithPetStatus() throws JsonProcessingException {
 
         logger.info("RUNNING TEST CASE 'getPetWithPetStatus'" );
-        PetResponse pet = createPet();
+        PetResponse pet = petBuilder.createPet();
+
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(pet.id());
 
         logger.info("Get Pet with Pet Status as " + "'" +pet.status() + "'" + " and Getting Status Code then Asserting Status Code as SUCCESS");
         assertEquals(200, petServices.getPetsWithPetStatusAndGetStatusCode("status", pet.status()));
@@ -452,8 +448,11 @@ public class AccessTest {
     public void postPet() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'postPet'" );
 
-        PetResponse petResponse = createPet();
+        PetResponse petResponse = petBuilder.createPet();
         Pet pet = mapper.convertValue(petResponse, Pet.class);
+
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(pet.id());
 
         logger.info("Posting a pet with payload " + mapper.writeValueAsString(pet));
         int responseStatusCode = petServices.postPetAndGetStatusCode(pet);
@@ -466,8 +465,11 @@ public class AccessTest {
     @Test
     public void postFileToExistPet() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'postFileToExistPet'" );
-        PetResponse pet = createPet();
+        PetResponse pet = petBuilder.createPet();
         logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
+
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(pet.id());
 
         logger.info("Uploading Image with text successfully and Asserting Status Code as SUCCESS");
         assertEquals(200, petServices.postFileAndText(pet.id(), "Puppy Golden", "/Users/zelihadegerli/Desktop/Puppy.jpeg"));
@@ -477,8 +479,11 @@ public class AccessTest {
     @Test
     public void updatePetNameAndStatus() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'updatePetNameAndStatus'" );
-        PetResponse pet = createPet();
+        PetResponse pet = petBuilder.createPet();
         logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
+
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(pet.id());
 
         logger.info("Updating Pet's Name and Pet's Status successfully and Asserting Status Code as SUCCESS");
         assertEquals(200, petServices.updatePetNameAndStatusAndGetStatusCode(pet.id(), "Summer", "Sold"));
@@ -498,7 +503,7 @@ public class AccessTest {
     @Test
     public void updatePet() throws JsonProcessingException {
         logger.info("RUNNING TEST CASE 'updatePet'" );
-        PetResponse pet = createPet();
+        PetResponse pet = petBuilder.createPet();
         logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
         List<Tag> tags = new ArrayList<>();
         Tag tag2 = ImmutableTag.builder()
@@ -518,6 +523,10 @@ public class AccessTest {
                 .status(pet.status())
                 .build();
 
+        logger.info("Created Pets's ids are saved on Id List");
+        petIdList.add(pet.id());
+        petIdList.add(updatedPet.id());
+
         logger.info("Updating Pet as Another Pet and Asserting Status Code as SUCCESS");
         assertEquals(200, petServices.updatePetAndGetStatusCode(updatedPet));
         logger.info("Pet is updated with payload " + mapper.writeValueAsString(updatedPet));
@@ -527,7 +536,7 @@ public class AccessTest {
     public void deletePet() {
 
         logger.info("RUNNING TEST CASE 'deletePet'" );
-        PetResponse pet = createPet();
+        PetResponse pet = petBuilder.createPet();
 
         Header key = new Header("api_key", "Content-Type,api_key,Authorization");
 
@@ -545,8 +554,11 @@ public class AccessTest {
 
         Header key = new Header("api_key", "Content-Type,api_key,Authorization");
 
-        PetResponse createdPet = createPet();
+        PetResponse createdPet = petBuilder.createPet();
         logger.info("Created Pet with payload " + mapper.writeValueAsString(createdPet));
+
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(createdPet.id());
 
         logger.info("Getting Pet with the PET ID : " + createdPet.id() );
         PetResponse createdPetResponse = petServices.getPet(createdPet.id());
@@ -590,6 +602,9 @@ public class AccessTest {
         assertEquals(200, petServices.updatePetAndGetStatusCode(updatedPet));
         logger.info("Pet is updated with payload " + mapper.writeValueAsString(updatedPet));
 
+        logger.info("Updated Pet's id is saved on Id List");
+        petIdList.add(updatedPet.id());
+
         logger.info("Deleting Exist Pet and Asserting Status Code as SUCCESS");
         assertEquals(200, petServices.deletePetAndGetStatusCode(updatedPet.id(), key), "Pet was not removed");
 
@@ -598,39 +613,25 @@ public class AccessTest {
 
     }
 
-    private PetResponse createPet(){
-        Category category = ImmutableCategory.builder()
-                .id(1)
-                .name("Dog")
-                .build();
+    @After
+    public void cleanUp(){
+        logger.info("RUNNING TEST CASE 'cleanUp'" );
+        Header key = new Header("api_key", "Content-Type,api_key,Authorization");
 
-        List<Tag> tags = new ArrayList<>();
-        Tag tag1 = ImmutableTag.builder()
-                .id(1)
-                .name("Golden")
-                .build();
+        logger.info("All data is deleted" );
 
-        Tag tag2 = ImmutableTag.builder()
-                .id(1)
-                .name("Gold")
-                .build();
-        tags.add(tag1);
-        tags.add(tag2);
+        for (String username:usernameList){
+            usersServices.deleteUserAndGetStatusCode(username);
+        }
 
-        List<String> photoUrl= new ArrayList<>();
-        photoUrl.add("https://www.dailydogtag.com/wp-content/uploads/2020/02/%C2%A9Bark-Gold-Photography-lifestyle-dog-photography-21.jpg");
+        for(int i = 0; i <orderIdList.size(); i++){
+            storeServices.deleteOrderByOrderIdAndGetStatusCode(orderIdList.get(i));
+        }
 
-        Pet pet = ImmutablePet.builder()
-                .id(1)
-                .category(category)
-                .name("Odie")
-                .photoUrls(photoUrl)
-                .tags(tags)
-                .status("pending")
-                .build();
+        for(long i = 0; i <petIdList.size(); i++){
+            petServices.deletePetAndGetStatusCode(petIdList.get((int) i), key);
+        }
 
-        logger.info("Creating a pet");
-        return petServices.postPet(pet);
+
     }
-
 }
