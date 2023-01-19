@@ -8,6 +8,8 @@ import io.petstore.domains.services.UsersServices;
 import io.petstore.steps.AccessTest;
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 public class UserBuilder {
     private final UsersServices usersServices;
     private final Logger logger;
@@ -17,7 +19,7 @@ public class UserBuilder {
         logger = Logger.getLogger(AccessTest.class);
     }
 
-    public User createUser(){
+    public User createUser(List<String> nameList){
         logger.info("Creating a COMMON USER");
         User user = ImmutableUser.builder()
                 .id(16)
@@ -29,6 +31,8 @@ public class UserBuilder {
                 .phone("12345678")
                 .userStatus(1).build();
         usersServices.postUser(user);
+        logger.info("Created User's username is saved on username List");
+        nameList.add(user.username());
         return user;
     }
 }

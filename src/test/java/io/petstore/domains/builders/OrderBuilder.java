@@ -9,6 +9,8 @@ import io.petstore.domains.services.UsersServices;
 import io.petstore.steps.AccessTest;
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 public class OrderBuilder {
     private final StoreServices storeServices;
     private final Logger logger;
@@ -18,7 +20,7 @@ public class OrderBuilder {
         logger = Logger.getLogger(AccessTest.class);
     }
 
-    public OrderResponse createOrder(){
+    public OrderResponse createOrder(List<Integer> orderIdList){
         OrderRequest order = ImmutableOrderRequest.builder()
                 .id(1)
                 .petId(1)
@@ -29,6 +31,8 @@ public class OrderBuilder {
                 .build();
 
         logger.info("Creating an ORDER");
+        logger.info("Created Order's id is saved on Id List");
+        orderIdList.add(order.id());
         return storeServices.postOrder(order);
     }
 }

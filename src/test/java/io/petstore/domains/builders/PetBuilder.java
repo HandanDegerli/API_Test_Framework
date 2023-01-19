@@ -17,7 +17,7 @@ public class PetBuilder {
         petServices = new PetServices();
         logger = Logger.getLogger(AccessTest.class);
     }
-    public PetResponse createPet(){
+    public PetResponse createPet(List<Long> petIdList){
         Category category = ImmutableCategory.builder()
                 .id(1)
                 .name("Dog")
@@ -49,6 +49,8 @@ public class PetBuilder {
                 .build();
 
         logger.info("Creating a pet");
+        logger.info("Created Pet's id is saved on Id List");
+        petIdList.add(pet.id());
         return petServices.postPet(pet);
     }
 }
