@@ -2,8 +2,6 @@ package io.petstore.domains.builders;
 
 import io.petstore.domains.entity.user.userRequest.ImmutableUser;
 import io.petstore.domains.entity.user.userRequest.User;
-import io.petstore.domains.services.PetServices;
-import io.petstore.domains.services.StoreServices;
 import io.petstore.domains.services.UsersServices;
 import io.petstore.steps.AccessTest;
 import org.apache.log4j.Logger;

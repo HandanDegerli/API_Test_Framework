@@ -3,9 +3,7 @@ package io.petstore.domains.builders;
 import io.petstore.domains.entity.store.storeRequest.ImmutableOrderRequest;
 import io.petstore.domains.entity.store.storeRequest.OrderRequest;
 import io.petstore.domains.entity.store.storeResponse.OrderResponse;
-import io.petstore.domains.services.PetServices;
 import io.petstore.domains.services.StoreServices;
-import io.petstore.domains.services.UsersServices;
 import io.petstore.steps.AccessTest;
 import org.apache.log4j.Logger;
 
