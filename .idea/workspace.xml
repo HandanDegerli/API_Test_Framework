@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="855cd913-4ea7-4b9b-b6ab-a6aa0c0983ea" name="Changes" comment="Encapsulation, Lambda and Modify">
+    <list default="true" id="855cd913-4ea7-4b9b-b6ab-a6aa0c0983ea" name="Changes" comment="JSON File Reader">
       <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/utils/SystemPropertyHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/io/petstore/utils/UserFileHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/domains/builders/UserBuilder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/io/petstore/steps/AccessTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user.json" beforeDir="false" afterPath="$PROJECT_DIR$/user.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674138663171</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="JSON File Reader">
+      <created>1674217092161</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1674217092161</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -258,6 +262,7 @@
     <MESSAGE value="Added Pet Test Cases" />
     <MESSAGE value="Encapsulation and Modify" />
     <MESSAGE value="Encapsulation, Lambda and Modify" />
-    <option name="LAST_COMMIT_MESSAGE" value="Encapsulation, Lambda and Modify" />
+    <MESSAGE value="JSON File Reader" />
+    <option name="LAST_COMMIT_MESSAGE" value="JSON File Reader" />
   </component>
 </project>

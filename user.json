@@ -1,2 +1,10 @@
-
-{"id": 16, "username": "Handan", "firstName":"Handan", "lastName":"Deger", "email":"hodie@dog.com", "password":"Odie123.", "phone": "12345678", "userStatus": 1}
+{
+  "id": 16,
+  "username": "Handan",
+  "firstName": "Handan",
+  "lastName": "Deger",
+  "email": "hodie@dog.com",
+  "password": "Odie123.",
+  "phone": "12345678",
+  "userStatus": 1
+}
