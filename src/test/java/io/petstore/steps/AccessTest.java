@@ -76,7 +76,7 @@ public class AccessTest {
     @Test
     public void getUserWithIncorrectUsername() {
         logger.info("RUNNING TEST CASE 'getUserWithIncorrectUsername'" );
-        String username = "IRFAN";
+        String username = "FREDDY";
 
         logger.info("Getting User with the incorrect USERNAME : " + username);
         int responseStatus = usersServices.getUserByNameStatusCode(username);
@@ -240,7 +240,7 @@ public class AccessTest {
         usernameList.add(user.username());
 
         logger.info("Second User is created");
-        User secondUser= ImmutableUser.builder().from(UserFileHelper.fileReader()).username("Zeliha").build();
+        User secondUser= ImmutableUser.builder().from(UserFileHelper.fileReader()).username("Penny").build();
 
         logger.info("Created Second User's username is saved on username List as " + secondUser.username());
         usernameList.add(secondUser.username());
@@ -469,7 +469,7 @@ public class AccessTest {
         logger.info("Pet is created with payload " + mapper.writeValueAsString(pet));
 
         logger.info("Uploading Image with text successfully and Asserting Status Code as SUCCESS");
-        assertEquals(200, petServices.postFileAndText(pet.id(), "Puppy Golden", "/Users/zelihadegerli/Desktop/Puppy.jpeg"));
+        assertEquals(200, petServices.postFileAndText(pet.id(), "Puppy Golden", "Puppy.jpeg"));
 
     }
 
@@ -573,7 +573,7 @@ public class AccessTest {
         assertEquals(petResponse, actualPet);
 
         logger.info("Uploading Image with text successfully and Asserting Status Code as SUCCESS");
-        assertEquals(200, petServices.postFileAndText(actualPet.id(), "Puppy Golden", "/Users/zelihadegerli/Desktop/Puppy.jpeg"));
+        assertEquals(200, petServices.postFileAndText(actualPet.id(), "Puppy Golden", "Puppy.jpeg"));
 
         logger.info("Getting Pet with the PET ID : " + actualPet.id() );
         PetResponse response = petServices.getPet(actualPet.id());
